@@ -32,7 +32,7 @@ void preprocess(int input[], int numOfElements)
 	}
 }
 			
-int query(int L, int R, int v, int p)
+void query(int L, int R, int v, int p)
 {
 	L--, R--;  //Since the array starts from index zero and the range of these two parameters start from 1
 	int k = 0; //Tracks the numbers greater than 'v' parameter
@@ -67,19 +67,21 @@ int query(int L, int R, int v, int p)
 	}
 
 	//Update arr at index p to u*k/(R-L+1)
-
+	cout << "The value of k is..." << k << endl;
 	int dArrIndex = p / dArrSize;
 	int val = (arr[p] * k) / (R - L + 3);
 	dArr[dArrIndex] += val - dArr[p];
+	cout << "Val is..." << val << endl;
 	arr[p] = val;
-	cout << "Value is..." << val << endl;
 
-	return k;
+
+	
 }
 
 
 int main()
 {
+	cout << "program is running" << endl;
 	int n = 0;		//Size of the input array
 	int m = 0;		//Number of queries
 	int u = 0;		//Max Num that could be in the input arr
@@ -93,7 +95,7 @@ int main()
 
 	inputArr = new int[n]; //Assign pointer to an array with N elements
 
-	for (int i = 0; i < n+m; i++)
+	for (int i = 0; i < n; i++)
 	{
 		if (i <= n)
 		{
@@ -101,16 +103,17 @@ int main()
 			inputArr[i] = u;
 			preprocess(inputArr, n);
 		}
-		else
-		{
-			cin >> L >> R >> v >> p;
-			/*cout <<*/ query(L,R,v,p) /*<< endl*/;
-		}
+	}
+	for (int i = 0; i < m; i++)
+	{
+		cin >> L >> R >> v >> p;
+		/*cout <<*/ query(L, R, v, p) /*<< endl*/;
 	}
 
-	//for (int i = 0; i < n; i++)
-	//{
-	//	cout << arr[i] << endl;
-	//}
+
+	for (int i = 0; i < n; i++)
+	{
+		cout << arr[i] << endl;
+	}
 	return 0;
 }
