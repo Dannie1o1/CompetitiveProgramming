@@ -32,9 +32,12 @@ void preprocess(int input[], int numOfElements)
 	}
 }
 			
-void query(int L, int R, int v, int p)
+void query(int L, int R, int v, int p, int u)
 {
-	L--, R--;  //Since the array starts from index zero and the range of these two parameters start from 1
+	int tempL = L;
+	int tempR = R;
+
+	L--, R--, p--;  //Since the array starts from index zero and the range of these two parameters start from 1
 	int k = 0; //Tracks the numbers greater than 'v' parameter
 
 	while (L < R && L%dArrSize != 0 && L != 0)
@@ -67,21 +70,25 @@ void query(int L, int R, int v, int p)
 	}
 
 	//Update arr at index p to u*k/(R-L+1)
-	cout << "The value of k is..." << k << endl;
+
 	int dArrIndex = p / dArrSize;
-	int val = (arr[p] * k) / (R - L + 3);
+	int val = (u * k) / (tempR - tempL + 1);
 	dArr[dArrIndex] += val - dArr[p];
-	cout << "Val is..." << val << endl;
 	arr[p] = val;
 
 
+	cout << "The value of k is..." << k << endl;
+	cout << "The value of u is..." << u << endl;
+	cout << "The value of R is..." << tempR << endl;
+	cout << "The value of L is..." << tempL << endl;
+	cout << "Val is..." << val << endl;
 	
 }
 
 
 int main()
 {
-	cout << "program is running" << endl;
+	//cout << "program is running" << endl;
 	int n = 0;		//Size of the input array
 	int m = 0;		//Number of queries
 	int u = 0;		//Max Num that could be in the input arr
@@ -89,31 +96,39 @@ int main()
 	int R = 0;      //Right boundary parameter for the query func
 	int v = 0;      //Comparison Value Parameter for the query func
 	int p = 0;		//Target index parameter
+	int num = 0;    //Number to be enter into the input array
 	int *inputArr;  //Point for inputArr 
 
 	cin >> n >> m >> u;
 
 	inputArr = new int[n]; //Assign pointer to an array with N elements
 
-	for (int i = 0; i < n; i++)
+	for (int i = 0; i < n+m; i++)
 	{
-		if (i <= n)
+		if (i < n)
 		{
-			cin >> u;
-			inputArr[i] = u;
-			preprocess(inputArr, n);
+			cin >> num;
+			inputArr[i] = num;
+			
+		}
+		else
+		{
+			if (i == n) preprocess(inputArr, n);
+			cin >> L >> R >> v >> p;
+			query(L, R, v, p, u);
+			for (int i = 0; i < n; i++)
+			{
+				cout << arr[i] << endl;
+			}
 		}
 	}
-	for (int i = 0; i < m; i++)
-	{
-		cin >> L >> R >> v >> p;
-		/*cout <<*/ query(L, R, v, p) /*<< endl*/;
-	}
-
 
 	for (int i = 0; i < n; i++)
 	{
 		cout << arr[i] << endl;
 	}
+
+
+
 	return 0;
 }
